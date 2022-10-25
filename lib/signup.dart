@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'colorscheme/color_schemes.g.dart';
 
 class SignUp extends StatelessWidget {
   const SignUp({super.key});
@@ -7,12 +8,9 @@ class SignUp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.green,
-      ),
-      home: const SignUpPage(title: 'Flutter Demo Home Page'),
+      home: SignUpPage(title: 'Flutter Demo Home Page'),
     );
   }
 }
@@ -49,7 +47,7 @@ class _SignUpPageState extends State<SignUpPage> {
     final GlobalKey<FormState> SignUpKey = GlobalKey<FormState>();
 
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 126, 86, 0),
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
@@ -71,9 +69,9 @@ class _SignUpPageState extends State<SignUpPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Container(
-              decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(5)),
-                  color: Colors.white),
+              decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.all(Radius.circular(5)),
+                  color: Theme.of(context).colorScheme.surfaceVariant),
               padding: const EdgeInsets.all(30),
               width: 300,
               child: Form(
@@ -86,29 +84,34 @@ class _SignUpPageState extends State<SignUpPage> {
                   const SizedBox(height: 20),
                   const TextField(
                     decoration: InputDecoration(
-                      hintText: 'Nome',
+                      labelText: 'Nome',
                       border: OutlineInputBorder(),
+                      floatingLabelBehavior: FloatingLabelBehavior.auto,
                     ),
                   ),
                   const SizedBox(height: 20),
                   const TextField(
                     decoration: InputDecoration(
-                      hintText: 'Cognome',
+                      labelText: 'Cognome',
                       border: OutlineInputBorder(),
+                      floatingLabelBehavior: FloatingLabelBehavior.auto,
                     ),
                   ),
                   const SizedBox(height: 20),
                   const TextField(
                     decoration: InputDecoration(
-                      hintText: 'E-mail',
+                      labelText: 'E-mail',
                       border: OutlineInputBorder(),
+                      floatingLabelBehavior: FloatingLabelBehavior.auto,
                     ),
                   ),
                   const SizedBox(height: 20),
                   const TextField(
+                    obscureText: true,
                     decoration: InputDecoration(
-                      hintText: 'Password',
+                      labelText: 'Password',
                       border: OutlineInputBorder(),
+                      floatingLabelBehavior: FloatingLabelBehavior.auto,
                     ),
                   ),
                   const SizedBox(height: 20),

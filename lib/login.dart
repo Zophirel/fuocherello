@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fuocherello/colorscheme/color_schemes.g.dart';
 import 'package:go_router/go_router.dart';
 
 class Login extends StatelessWidget {
@@ -7,12 +8,9 @@ class Login extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.green,
-      ),
-      home: const LoginPage(title: 'Flutter Demo Home Page'),
+      home: LoginPage(title: 'Flutter Demo Home Page'),
     );
   }
 }
@@ -49,7 +47,7 @@ class _LoginPageState extends State<LoginPage> {
     final GlobalKey<FormState> loginKey = GlobalKey<FormState>();
 
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 126, 86, 0),
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
@@ -71,35 +69,41 @@ class _LoginPageState extends State<LoginPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Container(
-              decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(5)),
-                  color: Colors.white),
+              decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.all(Radius.circular(5)),
+                  color: Theme.of(context).colorScheme.surfaceVariant),
               padding: const EdgeInsets.all(30),
               width: 300,
               child: Form(
                 key: loginKey,
                 child: Column(children: [
-                  const Text(
+                  Text(
                     'Benvenuto',
-                    style: TextStyle(fontSize: 40),
+                    style: TextStyle(
+                        fontSize: 40,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant),
                   ),
                   const SizedBox(height: 20),
                   const TextField(
                     decoration: InputDecoration(
-                      hintText: 'E-mail',
+                      floatingLabelBehavior: FloatingLabelBehavior.auto,
+                      labelText: 'E-mail',
                       border: OutlineInputBorder(),
                     ),
                   ),
                   const SizedBox(height: 20),
                   const TextField(
                     decoration: InputDecoration(
-                      hintText: 'Password',
+                      floatingLabelBehavior: FloatingLabelBehavior.auto,
+                      labelText: 'Password',
                       border: OutlineInputBorder(),
                     ),
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton(
                       style: ButtonStyle(
+                          backgroundColor: MaterialStatePropertyAll<Color>(
+                              Theme.of(context).colorScheme.primary),
                           minimumSize: MaterialStateProperty.all(
                               const Size(double.infinity, 50))),
                       onPressed: () {
@@ -107,15 +111,29 @@ class _LoginPageState extends State<LoginPage> {
                           // Process data.
                         }
                       },
-                      child: const Text('Accedi')),
+                      child: Text(
+                        'Accedi',
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.onPrimary),
+                      )),
                   const SizedBox(height: 20),
                   InkWell(
-                    child: const Text('hai dimenticato la password?'),
-                    onTap: () => GoRouter.of(context).go('/page2'),
+                    child: Text(
+                      'hai dimenticato la password?',
+                      style: TextStyle(
+                          color:
+                              Theme.of(context).colorScheme.onSurfaceVariant),
+                    ),
+                    onTap: () => GoRouter.of(context).go('/'),
                   ),
                   const SizedBox(height: 20),
                   InkWell(
-                    child: const Text('sei un nuovo utente?'),
+                    child: Text(
+                      'sei un nuovo utente?',
+                      style: TextStyle(
+                          color:
+                              Theme.of(context).colorScheme.onSurfaceVariant),
+                    ),
                     onTap: () => GoRouter.of(context).go('/signup'),
                   ),
                 ]),

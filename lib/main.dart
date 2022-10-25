@@ -2,12 +2,11 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'dart:js_util';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'login.dart';
 import 'signup.dart';
+import 'colorscheme/color_schemes.g.dart';
 // This scenario demonstrates a simple two-page app.
 //
 // The first route '/' is mapped to Page1Screen, and the second route '/page2'
@@ -29,6 +28,10 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => MaterialApp.router(
+        theme: ThemeData(
+          useMaterial3: true,
+          colorScheme: lightColorScheme,
+        ),
         routerConfig: _router,
         title: title,
       );
@@ -94,9 +97,20 @@ CustomTransitionPage buildPageWithDefaultTransition<T>({
   required Widget child,
 }) {
   return CustomTransitionPage<T>(
-    key: state.pageKey,
-    child: child,
-    transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-        FadeTransition(opacity: animation, child: child),
-  );
+      key: state.pageKey,
+      child: child,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+          SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(1.0, 0.0),
+              end: const Offset(0.0, 0.0),
+            ).animate(
+              CurvedAnimation(
+                parent: animation,
+                curve: Curves.linearToEaseOut,
+                reverseCurve: Curves.easeInToLinear,
+              ),
+            ),
+            child: child,
+          ));
 }
