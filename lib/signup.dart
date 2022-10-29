@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:fuocherello/components/login_signup/login/loginComp.dart';
+import 'package:fuocherello/components/login_signup/shared.dart';
+import 'package:fuocherello/components/login_signup/signup/signupComp.dart';
 import 'package:go_router/go_router.dart';
 import 'colorscheme/color_schemes.g.dart';
 
@@ -44,10 +47,10 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
-    final GlobalKey<FormState> SignUpKey = GlobalKey<FormState>();
+    final GlobalKey<FormState> signUpKey = GlobalKey<FormState>();
 
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.onInverseSurface,
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
@@ -74,69 +77,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   color: Theme.of(context).colorScheme.surfaceVariant),
               padding: const EdgeInsets.all(30),
               width: 300,
-              child: Form(
-                key: SignUpKey,
-                child: Column(children: [
-                  const Text(
-                    'Benvenuto',
-                    style: TextStyle(fontSize: 40),
-                  ),
-                  const SizedBox(height: 20),
-                  const TextField(
-                    decoration: InputDecoration(
-                      labelText: 'Nome',
-                      border: OutlineInputBorder(),
-                      floatingLabelBehavior: FloatingLabelBehavior.auto,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  const TextField(
-                    decoration: InputDecoration(
-                      labelText: 'Cognome',
-                      border: OutlineInputBorder(),
-                      floatingLabelBehavior: FloatingLabelBehavior.auto,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  const TextField(
-                    decoration: InputDecoration(
-                      labelText: 'E-mail',
-                      border: OutlineInputBorder(),
-                      floatingLabelBehavior: FloatingLabelBehavior.auto,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  const TextField(
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      labelText: 'Password',
-                      border: OutlineInputBorder(),
-                      floatingLabelBehavior: FloatingLabelBehavior.auto,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                      style: ButtonStyle(
-                          minimumSize: MaterialStateProperty.all(
-                              const Size(double.infinity, 50))),
-                      onPressed: () {
-                        if (SignUpKey.currentState!.validate()) {
-                          // Process data.
-                        }
-                      },
-                      child: const Text('Accedi')),
-                  const SizedBox(height: 20),
-                  InkWell(
-                    child: const Text('hai dimenticato la password?'),
-                    onTap: () => GoRouter.of(context).go('/'),
-                  ),
-                  const SizedBox(height: 20),
-                  InkWell(
-                    child: const Text('sei un nuovo utente?'),
-                    onTap: () => GoRouter.of(context).go('/'),
-                  ),
-                ]),
-              ),
+              child: signUpForm(signUpKey, context),
             )
           ],
         ),

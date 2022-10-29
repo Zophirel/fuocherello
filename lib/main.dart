@@ -3,9 +3,11 @@
 // found in the LICENSE file.
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'login.dart';
 import 'signup.dart';
+import 'home.dart';
 import 'colorscheme/color_schemes.g.dart';
 // This scenario demonstrates a simple two-page app.
 //
@@ -27,13 +29,19 @@ class App extends StatelessWidget {
   static const String title = 'GoRouter Example: Declarative Routes';
 
   @override
-  Widget build(BuildContext context) => MaterialApp.router(
-        theme: ThemeData(
-          useMaterial3: true,
-          colorScheme: lightColorScheme,
+  Widget build(BuildContext context) => ScreenUtilInit(
+        designSize: const Size(360, 690),
+        minTextAdapt: true,
+        splitScreenMode: true,
+        builder: (context, child) => MaterialApp.router(
+          theme: ThemeData(
+            useMaterial3: true,
+            colorScheme: lightColorScheme,
+          ),
+          routerConfig: _router,
+          title: title,
+          debugShowCheckedModeBanner: false,
         ),
-        routerConfig: _router,
-        title: title,
       );
 
   final GoRouter _router = GoRouter(
@@ -61,6 +69,17 @@ class App extends StatelessWidget {
               child: const SignUpPage(
                 title: 'Sign Up',
               ),
+            ),
+          ),
+          GoRoute(
+            path: 'home',
+            builder: (BuildContext context, GoRouterState state) =>
+                const HomePage(),
+            pageBuilder: (context, state) =>
+                buildPageWithDefaultTransition<void>(
+              context: context,
+              state: state,
+              child: const HomePage(),
             ),
           ),
         ],
@@ -97,20 +116,21 @@ CustomTransitionPage buildPageWithDefaultTransition<T>({
   required Widget child,
 }) {
   return CustomTransitionPage<T>(
-      key: state.pageKey,
+    key: state.pageKey,
+    child: child,
+    transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+        SlideTransition(
+      position: Tween<Offset>(
+        begin: const Offset(1.0, 0.0),
+        end: const Offset(0.0, 0.0),
+      ).animate(
+        CurvedAnimation(
+          parent: animation,
+          curve: Curves.linearToEaseOut,
+          reverseCurve: Curves.easeInToLinear,
+        ),
+      ),
       child: child,
-      transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-          SlideTransition(
-            position: Tween<Offset>(
-              begin: const Offset(1.0, 0.0),
-              end: const Offset(0.0, 0.0),
-            ).animate(
-              CurvedAnimation(
-                parent: animation,
-                curve: Curves.linearToEaseOut,
-                reverseCurve: Curves.easeInToLinear,
-              ),
-            ),
-            child: child,
-          ));
+    ),
+  );
 }

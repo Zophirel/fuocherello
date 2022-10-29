@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:fuocherello/colorscheme/color_schemes.g.dart';
 import 'package:go_router/go_router.dart';
+import 'components/login_signup/login/loginComp.dart';
+import 'components/login_signup/shared.dart';
 
 class Login extends StatelessWidget {
   const Login({super.key});
@@ -34,114 +35,32 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
+  final GlobalKey<FormState> loginKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    final GlobalKey<FormState> loginKey = GlobalKey<FormState>();
-
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.all(Radius.circular(5)),
-                  color: Theme.of(context).colorScheme.surfaceVariant),
-              padding: const EdgeInsets.all(30),
-              width: 300,
-              child: Form(
-                key: loginKey,
-                child: Column(children: [
-                  Text(
-                    'Benvenuto',
-                    style: TextStyle(
-                        fontSize: 40,
-                        color: Theme.of(context).colorScheme.onSurfaceVariant),
-                  ),
-                  const SizedBox(height: 20),
-                  const TextField(
-                    decoration: InputDecoration(
-                      floatingLabelBehavior: FloatingLabelBehavior.auto,
-                      labelText: 'E-mail',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  const TextField(
-                    decoration: InputDecoration(
-                      floatingLabelBehavior: FloatingLabelBehavior.auto,
-                      labelText: 'Password',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                      style: ButtonStyle(
-                          backgroundColor: MaterialStatePropertyAll<Color>(
-                              Theme.of(context).colorScheme.primary),
-                          minimumSize: MaterialStateProperty.all(
-                              const Size(double.infinity, 50))),
-                      onPressed: () {
-                        if (loginKey.currentState!.validate()) {
-                          // Process data.
-                        }
-                      },
-                      child: Text(
-                        'Accedi',
-                        style: TextStyle(
-                            color: Theme.of(context).colorScheme.onPrimary),
-                      )),
-                  const SizedBox(height: 20),
-                  InkWell(
-                    child: Text(
-                      'hai dimenticato la password?',
-                      style: TextStyle(
-                          color:
-                              Theme.of(context).colorScheme.onSurfaceVariant),
-                    ),
-                    onTap: () => GoRouter.of(context).go('/'),
-                  ),
-                  const SizedBox(height: 20),
-                  InkWell(
-                    child: Text(
-                      'sei un nuovo utente?',
-                      style: TextStyle(
-                          color:
-                              Theme.of(context).colorScheme.onSurfaceVariant),
-                    ),
-                    onTap: () => GoRouter.of(context).go('/signup'),
-                  ),
-                ]),
-              ),
-            )
-          ],
-        ),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      backgroundColor: Theme.of(context).colorScheme.onInverseSurface,
+      body: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+        if (constraints.maxWidth < 319) {}
+        if (320 < constraints.maxWidth && constraints.maxWidth < 480) {
+          return Center(
+            child: loginMobileCtn(loginKey, context),
+          );
+        } else if (481 < constraints.maxWidth && constraints.maxWidth < 768) {
+          return Center(
+            child: loginMobileCtn(loginKey, context),
+          );
+        } else if (769 < constraints.maxWidth && constraints.maxWidth < 1024) {
+          return const Text("laptop");
+        } else if (1025 < constraints.maxWidth && constraints.maxWidth < 1200) {
+          return const Text("desktop");
+        } else if (constraints.maxWidth > 1201) {
+          return const Text("bigger screen");
+        } else {
+          return const Text("mobile");
+        }
+      }),
     );
   }
 }
