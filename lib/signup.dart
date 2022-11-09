@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fuocherello/components/login_signup/login/loginComp.dart';
-import 'package:fuocherello/components/login_signup/shared.dart';
-import 'package:fuocherello/components/login_signup/signup/signupComp.dart';
-import 'package:go_router/go_router.dart';
-import 'colorscheme/color_schemes.g.dart';
+import 'package:fuocherello/components/login_signup/signup/signup_comp.dart';
 
 class SignUp extends StatelessWidget {
   const SignUp({super.key});
@@ -37,14 +33,6 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> signUpKey = GlobalKey<FormState>();

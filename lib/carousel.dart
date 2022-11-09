@@ -1,7 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_layout_grid/flutter_layout_grid.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CarouselItems {
   const CarouselItems(
@@ -40,81 +38,67 @@ class _CarouselPageState extends State<CarouselPage> {
     return CarouselSlider(
       options: CarouselOptions(
         viewportFraction: 1,
-        height: 170,
+        height: 260,
         enableInfiniteScroll: false,
       ),
       items: [1, 2].map((i) {
         return Builder(
           builder: (BuildContext context) {
-            return SizedBox(
-              width: 360,
+            return Container(
+              margin: const EdgeInsets.only(top: 100),
               height: 170,
-              child: Card(
-                color: Colors.white,
-                margin: const EdgeInsets.only(top: 20),
-                child: LayoutGrid(
-                  areas: ''' 
-                        txtHeader    img
-                        txtSubHeader img
-                        ''',
-                  columnSizes: [180.px, 180.px],
-                  rowSizes: [100.px, 50.px],
+              width: 360,
+              decoration: BoxDecoration(
+                color: const Color.fromARGB(255, 255, 255, 255),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.only(left: 20),
+                child: Row(
                   children: [
-                    SizedBox(
-                      height: double.infinity,
-                      width: double.infinity,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
+                    Expanded(
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              top: 10,
-                              left: 10,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: const [
+                          FittedBox(
+                            child: Text(
+                              '50%',
+                              style: TextStyle(
+                                  height: 0.8,
+                                  fontSize: 84,
+                                  fontWeight: FontWeight.bold),
+                              maxLines: 1,
                             ),
-                            child: FittedBox(
-                              child: Text(
-                                '50%',
-                                style: TextStyle(
-                                    fontSize: 70.sp,
-                                    fontWeight: FontWeight.bold),
-                                overflow: TextOverflow.ellipsis,
-                              ),
+                          ),
+                          FittedBox(
+                            child: Text(
+                              'su tutta la legna',
+                              style: TextStyle(
+                                  fontSize: 21, fontWeight: FontWeight.bold),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
                             ),
                           ),
                         ],
                       ),
-                    ).inGridArea('txtHeader'),
-                    SizedBox(
-                      height: double.infinity,
-                      width: double.infinity,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 10),
-                            child: Text(
-                              'su tutta la legna',
-                              style: TextStyle(fontSize: 20.sp, height: 0),
-                            ),
-                          )
-                        ],
-                      ),
-                    ).inGridArea('txtSubHeader'),
-                    SizedBox(
-                      height: double.infinity,
-                      child: Row(
+                    ),
+                    Expanded(
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: const [
-                          Image(
-                            image: AssetImage('assets/android/home/legna.png'),
-                            height: 120,
+                          SizedBox(
+                            width: 130,
+                            child: Image(
+                              image:
+                                  AssetImage('assets/android/home/legna.png'),
+                              height: 130,
+                            ),
                           ),
                         ],
                       ),
-                    ).inGridArea('img')
+                    ),
                   ],
                 ),
               ),

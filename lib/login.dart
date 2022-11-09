@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'components/login_signup/login/loginComp.dart';
-import 'components/login_signup/shared.dart';
+import 'components/login_signup/login/login_comp.dart';
 
 class Login extends StatelessWidget {
   const Login({super.key});

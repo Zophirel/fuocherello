@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 
 class MyApp extends StatelessWidget {
@@ -22,29 +23,74 @@ class SearchBar extends StatefulWidget {
   State<SearchBar> createState() => _SearchBarState();
 }
 
-class _SearchBarState extends State<SearchBar> {
-  int _counter = 0;
+bool clicked = false;
+Future<bool> barClicked() async {
+  return !clicked;
+}
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+StreamController controller = StreamController.broadcast();
+Stream stream = controller.stream;
+
+class _SearchBarState extends State<SearchBar> {
+  FocusNode focusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
   }
+
+  double searchBoxHeight = 56;
+  double searchBoxWidth = 360;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 56,
-      width: 360,
+    focusNode.addListener(() {
+      if (focusNode.hasFocus) {
+        setState(
+          () {
+            controller.add(clicked);
+          },
+        );
+      } else {
+        setState(
+          () {
+            searchBoxWidth = 360;
+          },
+        );
+      }
+    });
+
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      height: searchBoxHeight,
+      width: searchBoxWidth,
       decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.all(
           Radius.circular(10),
+        ),
+      ),
+      child: AnimatedPadding(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.only(left: 10, top: 4, right: 15),
+        child: TextField(
+          focusNode: focusNode,
+          onTap: () async {
+            if (clicked == false) {
+              clicked = await barClicked();
+              controller.add(clicked);
+            }
+          },
+          onChanged: (string) async {
+            //clicked = await barClicked();
+            //print(string);
+          },
+          onEditingComplete: () async {
+            //clicked = await barClicked();
+            //print('complete string');
+          },
+          decoration: const InputDecoration(
+              prefixIcon: Icon(Icons.search), border: InputBorder.none),
         ),
       ),
     );

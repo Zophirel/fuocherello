@@ -1,9 +1,5 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:fuocherello/searchbar.dart';
-import 'package:go_router/go_router.dart';
-import 'package:flutter_layout_grid/flutter_layout_grid.dart';
-import 'package:fuocherello/carousel.dart';
+import 'home.dart';
 
 class NavBar extends StatelessWidget {
   const NavBar({super.key});
@@ -28,33 +24,9 @@ class NavBarPage extends StatefulWidget {
 class _NavBarPageState extends State<NavBarPage>
     with SingleTickerProviderStateMixin {
   int currentPageIndex = 0;
-  late AnimationController _controller;
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 200));
-  }
-
-  bool pressed = false;
-  late IconButton searchFieldBtn;
-
-  Widget searchField() {
-    return searchFieldBtn = IconButton(
-      iconSize: 30.0,
-      icon: Padding(
-          padding: const EdgeInsets.only(left: 4, right: 4, top: 0),
-          child: pressed == true
-              ? const Icon(Icons.close)
-              : const Icon(Icons.search)),
-      onPressed: () {
-        setState(
-          () {
-            pressed = !pressed;
-          },
-        );
-      },
-    );
   }
 
   @override
@@ -84,16 +56,7 @@ class _NavBarPageState extends State<NavBarPage>
         ],
       ),
       body: [
-        Container(
-          width: double.infinity,
-          color: Theme.of(context).colorScheme.onSurfaceVariant,
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(10, 50, 10, 10),
-            child: Column(
-              children: const [SearchBar(), CarouselPage()],
-            ),
-          ),
-        ),
+        const HomePage(),
         Container(color: Colors.grey),
         Container(color: Colors.white),
       ][currentPageIndex],

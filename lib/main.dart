@@ -7,7 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'login.dart';
 import 'signup.dart';
-import 'home.dart';
+import 'navigation_bar.dart';
 import 'colorscheme/color_schemes.g.dart';
 // This scenario demonstrates a simple two-page app.
 //
@@ -74,12 +74,12 @@ class App extends StatelessWidget {
           GoRoute(
             path: 'home',
             builder: (BuildContext context, GoRouterState state) =>
-                const HomePage(),
+                const NavBarPage(),
             pageBuilder: (context, state) =>
                 buildPageWithDefaultTransition<void>(
               context: context,
               state: state,
-              child: const HomePage(),
+              child: const NavBarPage(),
             ),
           ),
         ],
