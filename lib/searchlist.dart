@@ -1,61 +1,95 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'Flutter Demo',
-      home: SearchList(),
-    );
-  }
-}
+import 'searchbar.dart' as src_bar;
 
 class SearchList extends StatefulWidget {
-  const SearchList({
-    super.key,
-  });
+  const SearchList({super.key});
 
   @override
-  State<SearchList> createState() => _SearchListState();
+  State<SearchList> createState() => SearchListState();
 }
 
-bool clicked = false;
-Future<bool> barClicked() async {
-  return !clicked;
-}
+class SearchListState extends State<SearchList> {
+  List<String> matchedList = [];
 
-StreamController controller = StreamController.broadcast();
-Stream stream = controller.stream;
-
-class _SearchListState extends State<SearchList> {
   @override
   void initState() {
     super.initState();
   }
 
+  Map<String, String> originalData = {
+    "titolo prodotto": "https://www.google.com",
+    "b": "https://www.google.com",
+    "c": "https://www.google.com"
+  };
+
+  var items = [];
+
+  void filterSearchResults(String query) {
+    List<String> dummySearchList = [];
+    dummySearchList.addAll(originalData.keys);
+    if (query.isNotEmpty) {
+      List<String> dummyListData = [];
+      for (var item in dummySearchList) {
+        if (item.toLowerCase().contains(query) || item.contains(query)) {
+          dummyListData.add(item);
+        }
+      }
+      setState(() {
+        items.clear();
+        items.addAll(dummyListData);
+      });
+      return;
+    } else {
+      setState(() {
+        if (query != "") {
+          items.clear();
+          items.addAll(originalData.keys);
+        }
+        if (query == "") {
+          items.clear();
+        }
+      });
+    }
+  }
+
+  Color favClicked() {
+    if (favColor == Colors.grey) {
+      return Colors.red;
+    } else {
+      return Colors.grey;
+    }
+  }
+
+  void textMatch(String text) {}
+
   double searchBoxHeight = 56;
   double searchBoxWidth = 360;
+  Color favColor = Colors.grey;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(top: 78),
-      color: Colors.white,
-      child: ListView.builder(
-          itemCount: 5,
-          itemBuilder: (BuildContext context, int index) {
-            return ListTile(
-                leading: const Icon(Icons.list),
-                trailing: const Text(
-                  "GFG",
-                  style: TextStyle(color: Colors.green, fontSize: 15),
+    src_bar.onChangeStream.listen(
+      (event) {
+        filterSearchResults(event);
+      },
+    );
+
+    return ListView.builder(
+      itemCount: items.length,
+      itemBuilder: (BuildContext context, int index) {
+        return Container(
+            height: 160,
+            color: Colors.white,
+            child: Row(
+              children: [
+                Container(
+                  width: 200,
+                  color: Colors.black,
                 ),
-                title: Text("List item $index"));
-          }),
+                Text('Titolo prodotto')
+              ],
+            ));
+      },
     );
   }
 }
