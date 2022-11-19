@@ -24,7 +24,7 @@ TextEditingController searchInput = TextEditingController();
 class _SearchBarState extends State<SearchBar> {
   FocusNode focusNode = FocusNode();
   double searchBoxHeight = 56;
-  double searchBoxWidth = 300;
+  double searchBoxWidth = 360;
 
   @override
   void initState() {
@@ -35,26 +35,24 @@ class _SearchBarState extends State<SearchBar> {
   Widget build(BuildContext context) {
     if (MediaQuery.of(context).size.width < 380) {
       setState(() {
-        searchBoxWidth = MediaQuery.of(context).size.width - 80;
-      });
-    } else {
-      setState(() {
-        searchBoxWidth = 360;
+        searchBoxWidth = MediaQuery.of(context).size.width - 20;
       });
     }
+
     focusNode.addListener(() {
       if (focusNode.hasFocus) {
+        onTapController.add(clicked);
         setState(
           () {
-            onTapController.add(clicked);
+            searchBoxWidth = 300;
           },
         );
       } else {
-        setState(
-          () {
+        Future.delayed(const Duration(milliseconds: 300), (() {
+          setState(() {
             searchBoxWidth = 360;
-          },
-        );
+          });
+        }));
       }
     });
 
@@ -65,7 +63,6 @@ class _SearchBarState extends State<SearchBar> {
         }),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 300),
-          constraints: const BoxConstraints(maxWidth: 300, minWidth: 200),
           height: searchBoxHeight,
           width: searchBoxWidth,
           decoration: const BoxDecoration(

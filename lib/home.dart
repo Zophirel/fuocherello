@@ -1,10 +1,7 @@
-import 'dart:js_util';
-
 import 'package:flutter/material.dart';
 import 'package:fuocherello/carousel.dart';
 import 'searchbar.dart' as src_bar;
 import 'searchlist.dart';
-import 'carousel.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -28,6 +25,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   int currentPageIndex = 0;
+  double backButtonOpct = 1;
   double carouselOpct = 1;
   double searchListWidth = 0;
   double listCtnHeight = 0;
@@ -53,20 +51,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         width: MediaQuery.of(context).size.width,
         color: Theme.of(context).colorScheme.primary,
       ),
-      Align(
-        alignment: Alignment.bottomCenter,
-        child: AnimatedContainer(
-          height: searchListCtnHeight,
-          alignment: Alignment.bottomCenter,
-          duration: const Duration(milliseconds: 300),
-          color: Colors.white,
-          curve: Curves.easeInOut,
-          child: const Padding(
-            padding: EdgeInsets.only(top: 100),
-            child: SearchList(),
-          ),
-        ),
-      ),
       AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         height: srcBoxHeight,
@@ -82,37 +66,38 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           child: const CarouselPage(),
         ),
       ),
+      Align(
+        alignment: Alignment.bottomCenter,
+        child: AnimatedContainer(
+          height: searchListCtnHeight,
+          alignment: Alignment.bottomCenter,
+          duration: const Duration(milliseconds: 300),
+          color: Colors.white,
+          curve: Curves.easeInOut,
+          child: const Padding(
+            padding: EdgeInsets.all(20),
+            child: SearchList(),
+          ),
+        ),
+      ),
       Padding(
         padding: const EdgeInsets.fromLTRB(10, 56, 10, 10),
         child: Stack(
-          alignment: AlignmentDirectional.topCenter,
+          alignment: Alignment.topCenter,
           fit: StackFit.loose,
           children: [
-            SizedBox(
+            Container(
+              alignment: Alignment.center,
               height: 56,
               width: MediaQuery.of(context).size.width,
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(right: 10),
-                        height: 50,
-                        width: 50,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                        child: const IconButton(
-                          onPressed: null,
-                          icon: Icon(Icons.arrow_back),
-                        ),
-                      ),
-                      const src_bar.SearchBar(),
-                    ],
-                  ),
-                ],
+              child: SizedBox(
+                width: 360,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: const [
+                    src_bar.SearchBar(),
+                  ],
+                ),
               ),
             ),
           ],
@@ -128,21 +113,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         width: MediaQuery.of(context).size.width,
         color: Theme.of(context).colorScheme.primary,
       ),
-      Align(
-        alignment: Alignment.bottomCenter,
-        child: AnimatedContainer(
-          height: searchListCtnHeight,
-          alignment: Alignment.bottomCenter,
-          duration: const Duration(milliseconds: 300),
-          color: Colors.white,
-          child: const Padding(
-            padding: EdgeInsets.only(top: 100),
-            child: SearchList(),
-          ),
-        ),
-      ),
       AnimatedContainer(
-        duration: Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 300),
         height: srcBoxHeight,
         color: Colors.amber,
       ),
@@ -155,42 +127,75 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           child: const CarouselPage(),
         ),
       ),
+      Align(
+        alignment: Alignment.bottomCenter,
+        child: AnimatedContainer(
+          height: searchListCtnHeight,
+          alignment: Alignment.bottomCenter,
+          duration: const Duration(milliseconds: 300),
+          color: Colors.black,
+          curve: Curves.easeInOut,
+          child: const Padding(
+            padding: EdgeInsets.all(20),
+            child: SizedBox(
+              width: 360,
+              child: SearchList(),
+            ),
+          ),
+        ),
+      ),
       Padding(
         padding: const EdgeInsets.fromLTRB(10, 56, 10, 10),
         child: Stack(
-          alignment: AlignmentDirectional.topCenter,
+          alignment: Alignment.topCenter,
           fit: StackFit.loose,
           children: [
-            SizedBox(
+            Container(
+              alignment: Alignment.center,
               height: 56,
               width: MediaQuery.of(context).size.width,
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
+              child: SizedBox(
+                width: 360,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    AnimatedOpacity(
+                      opacity: backButtonOpct,
+                      duration: const Duration(milliseconds: 100),
+                      child: Container(
                         margin: const EdgeInsets.only(right: 10),
                         height: 50,
                         width: 50,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: Colors.white,
-                          borderRadius: BorderRadius.circular(100),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(100),
+                          ),
                         ),
-                        child: const IconButton(
-                          onPressed: null,
-                          icon: Icon(Icons.arrow_back),
+                        child: IconButton(
+                          onPressed: (() {
+                            src_bar.onTapController.add(false);
+                            FocusManager.instance.primaryFocus?.unfocus();
+                            setState(() {
+                              backButtonOpct = 0;
+                            });
+                            Future.delayed(const Duration(milliseconds: 50),
+                                (() {
+                              backButtonOpct = 1;
+                            }));
+                          }),
+                          icon: const Icon(Icons.arrow_back),
                         ),
                       ),
-                      const src_bar.SearchBar(),
-                    ],
-                  ),
-                ],
+                    ),
+                    const src_bar.SearchBar(),
+                  ],
+                ),
               ),
             ),
           ],
         ),
-      )
+      ),
     ];
 
     /* homepageSearchOpen = [
@@ -278,7 +283,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               listCtnHeight = MediaQuery.of(context).size.height - 1;
               listCtnWidth = MediaQuery.of(context).size.width;
               srcBoxHeight = 130;
-              searchListCtnHeight = MediaQuery.of(context).size.height - 130;
+              searchListCtnHeight = MediaQuery.of(context).size.height - 200;
             },
           );
           Future.delayed(
@@ -292,9 +297,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         } else {
           setState(
             () {
+              carouselOpct = 1;
               bgHeight = MediaQuery.of(context).size.height - 1;
               listCtnHeight = 0;
-              carouselOpct = 1;
+              listCtnWidth = MediaQuery.of(context).size.width;
+              srcBoxHeight = 0;
+              searchListCtnHeight = 0;
             },
           );
           Future.delayed(
